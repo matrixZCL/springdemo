@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="user" class="UserServiceImpl">
+        <!-- collaborators and configuration for this bean go here -->
+    </bean>
+
+    <bean id="person" class="Person">
+        <property name="id" value="100"></property>
+        <property name="friend">
+            <list>
+                <value>tony</value>
+                <value>linda</value>
+            </list>
+        </property>
+
+        <property name="girls">
+            <map>
+                <entry key="1" value="linda"></entry>
+                <entry key="2" value="tom"></entry>
+            </map>
+        </property>
+    </bean>
+
+    <!--管理User-->
+    <bean id="user0" class="User">
+        <property name="id" value="0"></property>
+        <property name="password" value="123"></property>
+        <property name="username">
+            <value>dog</value>
+        </property>
+        <property name="props">
+            <props>
+                <prop key="driverClassName">oracle.jdbc.OracleDriver</prop>
+                <prop key="user">hr</prop>
+            </props>
+        </property>
+
+        <property name="addr" ref="address">
+
+        </property>
+    </bean>
+
+    <bean id="address" class="Address">
+        <property name="zipCode" value="10000"></property>
+        <property name="city" value="beijing"></property>
+    </bean>
+
+
+    <bean id="conn" class="ConnectionFactory"></bean>
+
+
+    <bean id="service" class="AOP2.ServiceImpl"></bean>
+    <bean id="zengqiang" class="AOP2.MyZengqiang"></bean>
+
+    <aop:config>
+        <aop:pointcut id="pc" expression="execution(void AOP2.ServiceImpl.service())"></aop:pointcut>
+        <aop:advisor pointcut-ref="pc" advice-ref="zengqiang"></aop:advisor>
+    </aop:config>
+
+
+    <bean id="ser0" class="AOP2.Service0Impl"></bean>
+    <bean id="zengqiang0" class="AOP2.Zengqiang0"></bean>
+
+    <aop:config>
+        <aop:pointcut id="zq0" expression="execution(void  AOP2.*.*())"></aop:pointcut>
+        <aop:advisor pointcut-ref="zq0" advice-ref="zengqiang0"></aop:advisor>
+    </aop:config>
+
+    <aop:config>
+        <aop:pointcut id="zq0" expression="@annotation(AOP2.annotation.HeheAdvice)"></aop:pointcut>
+        <aop:advisor advice-ref="zengqiang0" pointcut-ref="zq0"></aop:advisor>
+    </aop:config>
+
+
+
+
+
+    <!-- more bean definitions go here -->
+
+</beans>
